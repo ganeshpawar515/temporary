@@ -205,7 +205,7 @@
   <!-- Form -->
   <div class="form-container">
     <h2>Vehicle Information Form</h2>
-    <form id="myForm">
+    <form id="myForm" method="POST">
       {% csrf_token %}
       <div class="form-group">
         <label for="name">Full Name</label>
@@ -234,7 +234,7 @@
     <div class="explosion">💥</div>
   </div>
 
-  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+  <!-- <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
 <script>
   const cashfree = Cashfree({
@@ -279,7 +279,7 @@ document.getElementById("myForm").addEventListener("submit", function(e) {
     });
 });
 
-</script>
+</script> -->
 
 
 </body>
