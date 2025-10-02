@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Road Safety Form</title>
+  <style>
+    /* ====== Existing styles ====== */
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at center, #1a1a1a, #000000);
+      overflow: hidden;
+      color: white;
+    }
+
+    .safety-top-message {
+      font-size: 22px;
+      font-weight: bold;
+      color: #00ffcc;
+      margin-bottom: 20px;
+      animation: glowText 2s infinite alternate;
+      z-index: 10;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 5px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc; }
+    }
+
+    .form-container {
+      position: relative;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 30px;
+      border-radius: 15px;
+      width: 360px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.8), 0 0 60px rgba(0, 255, 204, 0.4);
+    }
+
+    .form-container h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #ffcc00;
+      text-shadow: 0 0 12px rgba(255, 204, 0, 0.9);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ddd;
+    }
+
+    .form-group input, 
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .btn-success {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #28a745, #34d058);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(90deg, #218838, #28a745);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
+    }
+
+    .btn-success:active {
+      transform: scale(0.98);
+    }
+
+    /* Collision animations */
+    .collision-container {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .word {
+      position: absolute;
+      font-size: 28px;
+      font-weight: bold;
+      animation-duration: 8s;
+      animation-iteration-count: infinite;
+      white-space: nowrap;
+    }
+
+    .word.left {
+      left: -200px;
+      top: 50%;
+      color: #ff3333;
+      animation-name: crashLeft;
+    }
+
+    .word.right {
+      right: -200px;
+      top: 50%;
+      color: #00ccff;
+      animation-name: crashRight;
+      animation-delay: 8s;
+    }
+
+    @keyframes crashLeft {
+      0% { left: -200px; opacity: 1; }
+      45% { left: calc(50% - 200px); }
+      50% { opacity: 0; transform: scale(1.5) rotate(20deg); }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    @keyframes crashRight {
+      0% { right: -200px; opacity: 1; }
+      45% { right: calc(50% - 200px); }
+      50% { opacity: 0; transform: scale(1.5) rotate(-20deg); }
+      100% { right: 100%; opacity: 0; }
+    }
+
+    .explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 50px;
+      color: yellow;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: explode 16s infinite;
+    }
+
+    @keyframes explode {
+      0%, 35% { opacity: 0; }
+      45% { opacity: 1; transform: translate(-50%, -50%) scale(1.6); }
+      55% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+      100% { opacity: 0; }
+    }
+
+    .scroll-message {
+      position: absolute;
+      width: 100%;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      pointer-events: none;
+      font-weight: 500;
+      z-index: 1;
+    }
+
+    .scroll-message.top { top: 10%; }
+    .scroll-message.bottom { bottom: 10%; }
+
+    .scroll-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scrollLeft 25s linear infinite;
+    }
+
+    @keyframes scrollLeft {
+      from { transform: translateX(0%); }
+      to { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Message -->
+  <div class="safety-top-message">🚦 Make information QR for your vehicle! 🚗</div>
+
+  <div class="scroll-message top">
+    <div class="scroll-text">
+      In many accidents, victims remain unidentified for hours — delaying help and worsening outcomes.
+    </div>
+  </div>
+
+  <div class="scroll-message bottom">
+    <div class="scroll-text">
+      In many accidents, victims remain unidentified for hours — delaying help and worsening outcomes.
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-container">
+    <h2>Vehicle Information Form</h2>
+    <form id="myForm">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="full_name" placeholder="Enter your full name" >
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" name="address" rows="3" placeholder="Enter your address" ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="contact1">Emergency Contact 1</label>
+        <input type="tel" id="contact1" name="contact1" placeholder="Enter emergency number" minlength="10" maxlength="10" >
+      </div>
+      <div class="form-group">
+        <label for="contact2">Emergency Contact 2</label>
+        <input type="tel" id="contact2" name="contact2" placeholder="Enter emergency number" minlength="10" maxlength="10">
+      </div>
+      <button type="submit" class="btn-success">Pay & Generate</button>
+    </form>
+  </div>
+
+  <!-- Collision Animation -->
+  <div class="collision-container">
+    <div class="word left">Speed</div>
+    <div class="word right">Carelessness</div>
+    <div class="explosion">💥</div>
+  </div>
+
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+<script>
+  const cashfree = Cashfree({
+  mode: "sandbox", //or production
+});
+document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = {
+        full_name: document.getElementById("name").value,
+        address: document.getElementById("address").value,
+        contact1: document.getElementById("contact1").value,
+        contact2: document.getElementById("contact2").value
+    };
+
+    fetch("{% url 'create_order' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Payment Session ID:", data.payment_session_id);
+        if (data.payment_session_id) {
+            cashfree.checkout({
+                paymentSessionId: data.payment_session_id,
+                redirectTarget:"_self"
+                // mode: "popup", // use 'popup' if you want a popup
+                // onSuccess: () => console.log("Payment successful"),
+                // onFailure: () => console.log("Payment failed")
+            });
+        } else {
+            alert("Payment failed: " + data.error);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Something went wrong. Try again.");
+    });
+});
+
+</script>
+
+
+</body>
+</html>
